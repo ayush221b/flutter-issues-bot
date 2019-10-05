@@ -1,0 +1,18 @@
+{
+  "name": "flutter-issues-bot",
+  "version": "1.0.0",
+  "description": "A simple twitter bot to help gain attention for deserving Flutter issues.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "flutter",
+    "twitter"
+  ],
+  "author": "Ayush Shekhar",
+  "license": "ISC",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
+}
