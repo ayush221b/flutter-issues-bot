@@ -1,3 +1,5 @@
+// Controller function to select issues which need to be tweeted about.
+
 module.exports = async function selectIssues(issuesList, db) {
 	var selectedIssues = [];
 

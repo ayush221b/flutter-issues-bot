@@ -3,6 +3,7 @@
 module.exports = async function makeGithubRequest(axios, db) {
 	var issuesList;
 	var totalResultCount;
+	var sort;
 
 	// Get current page number from db
 	var pageNumber;
@@ -12,7 +13,13 @@ module.exports = async function makeGithubRequest(axios, db) {
 		console.log(` currently on page number : ${data[0].pagenumber}`);
 		pageNumber = data[0].pagenumber;
 
-		const url = `https://api.github.com/search/issues?q='e'+is:issue+state:open+repo:flutter/flutter&sort=updated&page=${pageNumber}&per_page=20`;
+		if (pageNumber % 2 === 0) {
+			sort = 'created';
+		} else {
+			sort = 'updated';
+		}
+
+		const url = `https://api.github.com/search/issues?q='e'+is:issue+state:open+repo:flutter/flutter&sort=${sort}&page=${pageNumber}&per_page=20`;
 
 		// fetch issues
 		let response = await axios.get(url);
