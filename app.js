@@ -1,13 +1,15 @@
-var Twitter = require('twitter');
-var config = require('./config.js');
+const Twitter = require('twitter');
+const config = require('./config.js');
 
-var cron = require('node-cron');
-var axios = require('axios');
-var express = require('express');
-var knex = require('knex');
+const cron = require('node-cron');
+const axios = require('axios');
+const express = require('express');
+const knex = require('knex');
+const captureWebsite = require('capture-website');
 
 var makeGithubRequest = require('./controllers/github_controller');
 var selectIssues = require('./controllers/issue_select_controller');
+var tweetIssues = require('./controllers/twitter_controller');
 
 const app = express();
 
@@ -19,9 +21,9 @@ const db = knex({
 	}
 });
 
-var client = new Twitter(config);
+const client = new Twitter(config);
 
-cron.schedule('* * * * *', () => {
+cron.schedule('*/45 * * * *', () => {
 	console.log('started task');
 	performOperation();
 });
@@ -33,6 +35,8 @@ async function performOperation() {
 	if (issuesList.length > 0) {
 		var selectedIssues = await selectIssues(issuesList, db);
 		console.log(`Selected ${selectedIssues.length} issues.`);
+
+		await tweetIssues(selectedIssues, client, captureWebsite, axios);
 	}
 }
 
