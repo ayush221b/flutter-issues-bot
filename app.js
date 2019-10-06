@@ -7,6 +7,7 @@ var express = require('express');
 var knex = require('knex');
 
 var makeGithubRequest = require('./controllers/github_controller');
+var selectIssues = require('./controllers/issue_select_controller');
 
 const app = express();
 
@@ -20,7 +21,7 @@ const db = knex({
 
 var client = new Twitter(config);
 
-cron.schedule('*/10 * * * * *', () => {
+cron.schedule('* * * * *', () => {
 	console.log('started task');
 	performOperation();
 });
@@ -28,6 +29,11 @@ cron.schedule('*/10 * * * * *', () => {
 async function performOperation() {
 	var issuesList = await makeGithubRequest(axios, db);
 	console.log(`Total Issues being considered ${issuesList.length}`);
+
+	if (issuesList.length > 0) {
+		var selectedIssues = await selectIssues(issuesList, db);
+		console.log(`Selected ${selectedIssues.length} issues.`);
+	}
 }
 
 app.get('/', (req, res) => {
