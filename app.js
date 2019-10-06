@@ -23,7 +23,7 @@ const db = knex({
 
 const client = new Twitter(config);
 
-cron.schedule('*/15 * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
 	console.log('started task');
 	performOperation();
 });

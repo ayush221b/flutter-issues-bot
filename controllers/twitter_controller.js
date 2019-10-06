@@ -6,7 +6,10 @@ module.exports = async function tweetIssues(selectedIssuesList, client, captureW
 
 		await captureWebsite.file(issue.html_url, 'screenshot.png', {
 			overwrite: true,
-			scrollToElement: '.gh-header-show'
+			scrollToElement: '.gh-header-show',
+			launchOptions: {
+				args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
+			}
 		});
 
 		// Load your image
