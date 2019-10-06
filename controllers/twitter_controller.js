@@ -12,8 +12,10 @@ module.exports = async function tweetIssues(selectedIssuesList, client, captureW
 			}
 		});
 
+		console.log(`got image for ${issue.title}`);
+
 		// Load your image
-		var data = require('fs').readFileSync('screenshot.png');
+		var data = require('fs').readFileSync('./screenshot.png');
 
 		// Make post request on media endpoint. Pass file data as media parameter
 		client.post('media/upload', { media: data }, function(error, media, response) {
@@ -32,9 +34,9 @@ module.exports = async function tweetIssues(selectedIssuesList, client, captureW
 				client.post('statuses/update', status, function(error, tweet, response) {
 					if (!error) {
 						console.log(tweet);
-					}
+					} else console.log(error);
 				});
-			}
+			} else console.log(error);
 		});
 	}
 };
