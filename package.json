@@ -4,7 +4,8 @@
   "description": "A simple twitter bot to help gain attention for deserving Flutter issues.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
   },
   "keywords": [
     "flutter",
@@ -16,7 +17,9 @@
     "axios": "^0.19.0",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "knex": "^0.19.4",
     "node-cron": "^2.0.3",
+    "pg": "^7.12.1",
     "twitter": "^1.7.1"
   }
 }
