@@ -7,19 +7,38 @@ module.exports = async function makeGithubRequest(axios, db) {
 	// Get current page number from db
 	var pageNumber;
 
-	var data = await db('page').where('id', 1);
-	console.log(` currently on page number : ${data[0].pagenumber}`);
-	pageNumber = data[0].pagenumber;
+	try {
+		var data = await db('page').where('id', 1);
+		console.log(` currently on page number : ${data[0].pagenumber}`);
+		pageNumber = data[0].pagenumber;
 
-	const url = `https://api.github.com/search/issues?q='e'+is:issue+state:open+repo:flutter/flutter&sort=updated&page=${pageNumber}&per_page=20`;
+		const url = `https://api.github.com/search/issues?q='e'+is:issue+state:open+repo:flutter/flutter&sort=updated&page=${pageNumber}&per_page=20`;
 
-	let response = await axios.get(url);
+		// fetch issues
+		let response = await axios.get(url);
 
-	totalResultCount = response.data.total_count;
+		totalResultCount = response.data.total_count;
 
-	console.log(`total issues count is: ${totalResultCount}`);
+		console.log(`total issues count is: ${totalResultCount}`);
 
-	issuesList = response.data.items;
+		var allowedPages = Math.floor(totalResultCount / 20);
+		if (pageNumber < allowedPages - 1) {
+			pageNumber += 1;
 
-	return issuesList;
+			await db('page').where('id', 1).update({
+				pagenumber: pageNumber
+			});
+		} else {
+			await db('page').where('id', 1).update({
+				pagenumber: 1
+			});
+		}
+
+		issuesList = response.data.items;
+
+		return issuesList;
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
 };
