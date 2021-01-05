@@ -14,7 +14,7 @@
   "author": "Ayush Shekhar",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "capture-website": "^0.5.0",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
